@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                           Int      @id @default(autoincrement())
+  wallet                       String   @unique
+  username                     String
+  member_since                 DateTime @default(now())
+  surveys_completed            Int      @default(0)
+  points                       Int      @default(0)
+  surveys_created              Int      @default(0)
+  funds                        Float    @default(0.0)
+  strike_multiplier            Float    @default(0.0)
+  surveys_completed_multiplier Float    @default(0.0)
+
+  surveys   Survey[]
+  responses Response[]
+}
+
+model Survey {
+  id              Int      @id @default(autoincrement())
+  user_id         Int
+  title           String
+  question        String
+  option_a        String
+  option_b        String
+  option_c        String
+  option_d        String
+  created_at      DateTime @default(now())
+  responses_count Int      @default(0)
+
+  user      User       @relation(fields: [user_id], references: [id])
+  responses Response[]
+}
+
+model Response {
+  id              Int      @id @default(autoincrement())
+  user_id         Int
+  survey_id       Int
+  selected_option String
+  answered_at     DateTime @default(now())
+
+  user   User   @relation(fields: [user_id], references: [id])
+  survey Survey @relation(fields: [survey_id], references: [id])
+}
