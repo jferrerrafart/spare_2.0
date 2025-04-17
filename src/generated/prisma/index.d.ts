@@ -1343,7 +1343,7 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: number
     wallet: string
-    username: string
+    username: string | null
     member_since: Date
     surveys_completed: number
     points: number
@@ -1445,7 +1445,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       wallet: string
-      username: string
+      username: string | null
       member_since: Date
       surveys_completed: number
       points: number
@@ -4718,6 +4718,14 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
   /**
    * Field references
    */
@@ -4788,7 +4796,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: IntFilter<"User"> | number
     wallet?: StringFilter<"User"> | string
-    username?: StringFilter<"User"> | string
+    username?: StringNullableFilter<"User"> | string | null
     member_since?: DateTimeFilter<"User"> | Date | string
     surveys_completed?: IntFilter<"User"> | number
     points?: IntFilter<"User"> | number
@@ -4803,7 +4811,7 @@ export namespace Prisma {
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     wallet?: SortOrder
-    username?: SortOrder
+    username?: SortOrderInput | SortOrder
     member_since?: SortOrder
     surveys_completed?: SortOrder
     points?: SortOrder
@@ -4821,7 +4829,7 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    username?: StringFilter<"User"> | string
+    username?: StringNullableFilter<"User"> | string | null
     member_since?: DateTimeFilter<"User"> | Date | string
     surveys_completed?: IntFilter<"User"> | number
     points?: IntFilter<"User"> | number
@@ -4836,7 +4844,7 @@ export namespace Prisma {
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     wallet?: SortOrder
-    username?: SortOrder
+    username?: SortOrderInput | SortOrder
     member_since?: SortOrder
     surveys_completed?: SortOrder
     points?: SortOrder
@@ -4857,7 +4865,7 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"User"> | number
     wallet?: StringWithAggregatesFilter<"User"> | string
-    username?: StringWithAggregatesFilter<"User"> | string
+    username?: StringNullableWithAggregatesFilter<"User"> | string | null
     member_since?: DateTimeWithAggregatesFilter<"User"> | Date | string
     surveys_completed?: IntWithAggregatesFilter<"User"> | number
     points?: IntWithAggregatesFilter<"User"> | number
@@ -5014,7 +5022,7 @@ export namespace Prisma {
 
   export type UserCreateInput = {
     wallet: string
-    username: string
+    username?: string | null
     member_since?: Date | string
     surveys_completed?: number
     points?: number
@@ -5029,7 +5037,7 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id?: number
     wallet: string
-    username: string
+    username?: string | null
     member_since?: Date | string
     surveys_completed?: number
     points?: number
@@ -5043,7 +5051,7 @@ export namespace Prisma {
 
   export type UserUpdateInput = {
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number
@@ -5058,7 +5066,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number
@@ -5073,7 +5081,7 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id?: number
     wallet: string
-    username: string
+    username?: string | null
     member_since?: Date | string
     surveys_completed?: number
     points?: number
@@ -5085,7 +5093,7 @@ export namespace Prisma {
 
   export type UserUpdateManyMutationInput = {
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number
@@ -5098,7 +5106,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number
@@ -5276,6 +5284,21 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -5308,6 +5331,11 @@ export namespace Prisma {
     every?: ResponseWhereInput
     some?: ResponseWhereInput
     none?: ResponseWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type SurveyOrderByRelationAggregateInput = {
@@ -5409,6 +5437,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5568,6 +5614,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -5755,6 +5805,20 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -5808,6 +5872,34 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5959,7 +6051,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutSurveysInput = {
     wallet: string
-    username: string
+    username?: string | null
     member_since?: Date | string
     surveys_completed?: number
     points?: number
@@ -5973,7 +6065,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSurveysInput = {
     id?: number
     wallet: string
-    username: string
+    username?: string | null
     member_since?: Date | string
     surveys_completed?: number
     points?: number
@@ -6025,7 +6117,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutSurveysInput = {
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number
@@ -6039,7 +6131,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSurveysInput = {
     id?: IntFieldUpdateOperationsInput | number
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number
@@ -6068,7 +6160,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutResponsesInput = {
     wallet: string
-    username: string
+    username?: string | null
     member_since?: Date | string
     surveys_completed?: number
     points?: number
@@ -6082,7 +6174,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutResponsesInput = {
     id?: number
     wallet: string
-    username: string
+    username?: string | null
     member_since?: Date | string
     surveys_completed?: number
     points?: number
@@ -6141,7 +6233,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutResponsesInput = {
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number
@@ -6155,7 +6247,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutResponsesInput = {
     id?: IntFieldUpdateOperationsInput | number
     wallet?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     member_since?: DateTimeFieldUpdateOperationsInput | Date | string
     surveys_completed?: IntFieldUpdateOperationsInput | number
     points?: IntFieldUpdateOperationsInput | number

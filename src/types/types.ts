@@ -20,3 +20,10 @@ export interface iRegisterU {
   wallet: string;
   username: string; //necesario?
 }
+
+export interface UserContextType {
+  userId: string | null;
+  wallet: string | null;
+  setUserId: (id: string) => void;
+  setWallet: (wallet: string) => void;
+}

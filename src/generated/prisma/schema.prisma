@@ -17,7 +17,7 @@ datasource db {
 model User {
   id                           Int      @id @default(autoincrement())
   wallet                       String   @unique
-  username                     String
+  username                     String?
   member_since                 DateTime @default(now())
   surveys_completed            Int      @default(0)
   points                       Int      @default(0)
