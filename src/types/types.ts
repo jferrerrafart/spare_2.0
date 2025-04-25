@@ -1,4 +1,5 @@
 export interface iSurvey {
+  id: number;
   user_id: number; // ver aquí como definimos la compañía para que puueda poner su razon social
   title: string;
   question: string;
@@ -6,6 +7,8 @@ export interface iSurvey {
   option_b: string;
   option_c: string;
   option_d: string;
+  created_at: Date;
+  responses_count: number;
 }
 export interface iResponse {
   user_id: number;
@@ -22,8 +25,8 @@ export interface iRegisterU {
 }
 
 export interface UserContextType {
-  userId: string | null;
+  userId: number | null;
   wallet: string | null;
-  setUserId: (id: string) => void;
+  setUserId: (id: number) => void;
   setWallet: (wallet: string) => void;
 }

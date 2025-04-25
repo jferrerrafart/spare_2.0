@@ -49,7 +49,9 @@ export default function Header() {
             const data = await res.json();
             console.log("User exists:", data.user_id);
             setUserId(data.user_id);
-            setWallet(data.wallet);
+            if (!wallet) {
+              setWallet(data.wallet);
+            }
             router.push("/companydashboard"); // ✅ navigate when user is set
           } else if (res.status === 404) {
             // User doesn't exist, create one
