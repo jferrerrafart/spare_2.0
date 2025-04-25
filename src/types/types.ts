@@ -30,3 +30,12 @@ export interface UserContextType {
   setUserId: (id: number) => void;
   setWallet: (wallet: string) => void;
 }
+
+export interface iResults {
+  survey_id: number;
+  totalResponses: number;
+  option_a: number;
+  option_b: number;
+  option_c: number;
+  option_d: number;
+}

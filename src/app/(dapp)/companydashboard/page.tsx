@@ -143,7 +143,7 @@ export default function companyDashboard() {
                     <TableCell className="font-medium text-left">
                       {currentSurvey.title}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       {moment(currentSurvey.created_at).fromNow()}
                     </TableCell>
                     <TableCell className="text-center">

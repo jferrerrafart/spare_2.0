@@ -24,6 +24,7 @@ import { useUser } from "@/context/UserContext";
 import { iSurvey } from "@/types/types";
 import moment from "moment";
 import Link from "next/link";
+import { fetchAvailableSurveys } from "./FetchAvailableSurveys";
 
 export default function userDashboard() {
   const { userId, wallet } = useUser();
@@ -32,6 +33,18 @@ export default function userDashboard() {
   const [surveyCompletionStatus, setSurveyCompletionStatus] = useState<
     Map<number, boolean>
   >(new Map());
+
+  useEffect(() => {
+    const getSurveys = async () => {
+      if (userId !== null) {
+        const availableSurveys = await fetchAvailableSurveys();
+        setSurveyList(availableSurveys);
+      }
+    };
+    if (userId) {
+      getSurveys();
+    }
+  }, [userId]);
 
   /*async function fetchData2() {
     const surveys = await spareAPI.getAllSurveys();
@@ -137,15 +150,17 @@ export default function userDashboard() {
                     <TableCell className="font-medium text-left">
                       {currentSurvey.title}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       {moment(currentSurvey.created_at).fromNow()}
                     </TableCell>
-                    <TableCell>{currentSurvey.user_id}</TableCell>
+                    <TableCell className="text-center">
+                      {currentSurvey.user_id}
+                    </TableCell>
                     <TableCell className="text-center">
                       {completionStatus ? "YES" : "NO"}
                     </TableCell>
                     <TableCell className="text-right px-0">
-                      <Link href={`/survey-complete/${currentSurvey.id}`}>
+                      <Link href={`/answersurvey/${currentSurvey.id}`}>
                         <Button
                           className={`px-2 py-1 text-xs ${
                             completionStatus
