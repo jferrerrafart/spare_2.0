@@ -50,7 +50,6 @@ export default function answerSurvey() {
     fetchSurvey();
   }, [params.id]);
 
-  // 📨 Envía la respuesta a /api/surveyresults
   const sendResponse = async () => {
     if (!survey?.id) return;
 
@@ -81,61 +80,63 @@ export default function answerSurvey() {
   };
 
   return (
-    <div className="flex justify-center items-center py-15">
-      <Card>
-        <CardHeader className="py-10 px-20">
-          <CardTitle>{survey ? survey.question : "Loading..."}</CardTitle>
-          <CardDescription className="py-2">
-            Please, choose one option and press "Send" when you are ready
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="py-0">
-          <RadioGroup
-            defaultValue="option_a"
-            className="flex flex-col space-y-4 py-2 items-center"
-            onValueChange={(value) => setSelectedOption(value)}
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option_a" id="option_a" />
-              <Label htmlFor="option_a">
-                {survey ? survey.option_a : "Loading..."}
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option_b" id="option_b" />
-              <Label htmlFor="option_b">
-                {survey ? survey.option_b : "Loading..."}
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option_c" id="option_c" />
-              <Label htmlFor="option_c">
-                {survey ? survey.option_c : "Loading..."}
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option_d" id="option_d" />
-              <Label htmlFor="option_d">
-                {survey ? survey.option_d : "Loading..."}
-              </Label>
-            </div>
-          </RadioGroup>
-          <CardFooter className="flex justify-center space-x-4 py-17">
-            <Link href="/userdashboard">
-              <Button className="px-5 py-1 text-xs bg-white text-black border border-gray-300 hover:bg-gray-100">
-                Cancel
-              </Button>
-            </Link>
-            <Button
-              type="submit"
-              onClick={sendResponse}
-              className="px-7 py-1 text-xs"
+    <div className="flex justify-center px-4 md:px-0 py-10">
+      <div className="w-full max-w-3xl">
+        <Card>
+          <CardHeader className="py-10 px-20">
+            <CardTitle>{survey ? survey.question : "Loading..."}</CardTitle>
+            <CardDescription className="py-2">
+              Please, choose one option and press "Send" when you are ready
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="py-0">
+            <RadioGroup
+              defaultValue="option_a"
+              className="flex flex-col space-y-4 py-2 items-center"
+              onValueChange={(value) => setSelectedOption(value)}
             >
-              Send
-            </Button>
-          </CardFooter>
-        </CardContent>
-      </Card>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option_a" id="option_a" />
+                <Label htmlFor="option_a">
+                  {survey ? survey.option_a : "Loading..."}
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option_b" id="option_b" />
+                <Label htmlFor="option_b">
+                  {survey ? survey.option_b : "Loading..."}
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option_c" id="option_c" />
+                <Label htmlFor="option_c">
+                  {survey ? survey.option_c : "Loading..."}
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option_d" id="option_d" />
+                <Label htmlFor="option_d">
+                  {survey ? survey.option_d : "Loading..."}
+                </Label>
+              </div>
+            </RadioGroup>
+            <CardFooter className="flex justify-center space-x-4 py-17">
+              <Link href="/userdashboard">
+                <Button className="px-5 py-1 text-xs bg-white text-black border border-gray-300 hover:bg-gray-100">
+                  Cancel
+                </Button>
+              </Link>
+              <Button
+                type="submit"
+                onClick={sendResponse}
+                className="px-7 py-1 text-xs"
+              >
+                Send
+              </Button>
+            </CardFooter>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

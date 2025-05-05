@@ -87,65 +87,67 @@ export default function Header() {
   }, [wallet, setUserId, setWallet, router]);
 
   return (
-    <header className="relative flex items-center w-full px-5 py-5">
-      <div className="flex">
-        <ToggleGroup
-          type="single"
-          defaultValue="company"
-          className="space-x-0.5 border border-grey rounded-sm text-xs"
-        >
-          <Link href="/companydashboard" passHref>
-            <ToggleGroupItem
-              asChild
-              value="company"
-              aria-label="Company View"
-              className="px-5 py-1 text-xs"
-            >
-              <button>Company View</button>
-            </ToggleGroupItem>
-          </Link>
+    <header className="w-full px-4 py-5">
+      <div className="relative flex items-center max-w-7xl mx-auto">
+        <div className="flex">
+          <ToggleGroup
+            type="single"
+            defaultValue="company"
+            className="space-x-0.5 border border-grey rounded-sm text-xs"
+          >
+            <Link href="/companydashboard" passHref>
+              <ToggleGroupItem
+                asChild
+                value="company"
+                aria-label="Company View"
+                className="px-5 py-1 text-xs"
+              >
+                <button>Company View</button>
+              </ToggleGroupItem>
+            </Link>
 
-          <Link href="/userdashboard" passHref>
-            <ToggleGroupItem
-              asChild
-              value="user"
-              aria-label="User View"
-              className="px-2 py-1 text-xs"
-            >
-              <button>User View</button>
-            </ToggleGroupItem>
-          </Link>
-        </ToggleGroup>
-      </div>
-      <h1 className="absolute left-1/2 transform -translate-x-1/2 -translate-y-2 text-lg font-bold">
-        <Image src="/logospare.png" alt="Logo" width={300} height={300} />
-      </h1>
-      <div className="ml-auto flex items-center space-x-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
-              System
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Button className="bg-emerald-600" onClick={connectWallet}>
-          {wallet
-            ? wallet.slice(0, 6) + "..." + wallet.slice(-4)
-            : "Connect Wallet"}
-        </Button>
+            <Link href="/userdashboard" passHref>
+              <ToggleGroupItem
+                asChild
+                value="user"
+                aria-label="User View"
+                className="px-2 py-1 text-xs"
+              >
+                <button>User View</button>
+              </ToggleGroupItem>
+            </Link>
+          </ToggleGroup>
+        </div>
+        <h1 className="absolute left-1/2 transform -translate-x-1/2 -translate-y-2 text-lg font-bold">
+          <Image src="/logospare.png" alt="Logo" width={300} height={300} />
+        </h1>
+        <div className="ml-auto flex items-center space-x-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                System
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button className="bg-emerald-600" onClick={connectWallet}>
+            {wallet
+              ? wallet.slice(0, 6) + "..." + wallet.slice(-4)
+              : "Connect Wallet"}
+          </Button>
+        </div>
       </div>
     </header>
   );

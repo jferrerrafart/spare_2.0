@@ -46,40 +46,42 @@ export default function surveyResults() {
   }, [params?.id]);
 
   return (
-    <div className="flex justify-center items-center py-15">
-      <Card>
-        <CardHeader className="py-10 px-20">
-          <CardTitle>{surveyR ? surveyR.question : "Loading..."}</CardTitle>
-          <CardDescription className="py-2">
-            Total responses: {results ? results.totalResponses : "Loading..."}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="py-0">
-          <p>
-            {surveyR ? surveyR.option_a : "Loading..."}:{" "}
-            {results ? results.option_a : "Loading..."}%
-          </p>
-          <p>
-            {surveyR ? surveyR.option_b : "Loading..."}:{" "}
-            {results ? results.option_b : "Loading..."}%
-          </p>
-          <p>
-            {surveyR ? surveyR.option_c : "Loading..."}:{" "}
-            {results ? results.option_c : "Loading..."}%
-          </p>
-          <p>
-            {surveyR ? surveyR.option_d : "Loading..."}:{" "}
-            {results ? results.option_d : "Loading..."}%
-          </p>
-          <CardFooter className="flex justify-center space-x-4 py-17">
+    <div className="flex justify-center py-16 px-4">
+      <div className="w-full max-w-3xl">
+        <Card>
+          <CardHeader className="py-10 px-6">
+            <CardTitle>{surveyR ? surveyR.question : "Loading..."}</CardTitle>
+            <CardDescription className="py-2">
+              Total responses: {results ? results.totalResponses : "Loading..."}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="px-6 py-0 space-y-2">
+            <p>
+              {surveyR ? surveyR.option_a : "Loading..."}:{" "}
+              {results ? results.option_a : "Loading..."}%
+            </p>
+            <p>
+              {surveyR ? surveyR.option_b : "Loading..."}:{" "}
+              {results ? results.option_b : "Loading..."}%
+            </p>
+            <p>
+              {surveyR ? surveyR.option_c : "Loading..."}:{" "}
+              {results ? results.option_c : "Loading..."}%
+            </p>
+            <p>
+              {surveyR ? surveyR.option_d : "Loading..."}:{" "}
+              {results ? results.option_d : "Loading..."}%
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-center space-x-4 py-10">
             <Link href="/companydashboard">
               <Button className="px-5 py-1 text-xs bg-black text-white border border-gray-300">
                 Back to the dashboard
               </Button>
             </Link>
           </CardFooter>
-        </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

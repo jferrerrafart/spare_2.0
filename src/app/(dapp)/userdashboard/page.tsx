@@ -25,14 +25,16 @@ import { iSurvey } from "@/types/types";
 import moment from "moment";
 import Link from "next/link";
 import { fetchAvailableSurveys } from "./FetchAvailableSurveys";
+import { fetchAnsweredSurveysCount } from "./FetchAnsweredSurveysCount";
+import { checkIfSurveyCompleted } from "./CheckIfSurveyCompleted";
 
 export default function userDashboard() {
   const { userId, wallet } = useUser();
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
+  const [completedSurveys, setCompletedSurveys] = useState<{
+    [key: number]: boolean;
+  }>({});
   const [numberResp, setNumberResp] = useState(0);
-  const [surveyCompletionStatus, setSurveyCompletionStatus] = useState<
-    Map<number, boolean>
-  >(new Map());
 
   useEffect(() => {
     const getSurveys = async () => {
@@ -46,138 +48,178 @@ export default function userDashboard() {
     }
   }, [userId]);
 
-  /*async function fetchData2() {
-    const surveys = await spareAPI.getAllSurveys();
-    setSurveyList(surveys.surveys as iSurvey[]);
-  }
-  async function fetchData3() {
-    const count = await spareAPI.getNumberResponses(Number(userId)); // aquí iría el user_id, lo he hardcodeado
-    setNumberResp(count.numberResponses);
-  }
-
-  async function fetchSurveyCompletionStatus(surveyId: number) {
-    // Llamar a la API para saber si el usuario ha completado la encuesta
-    const isCompleted = await spareAPI.getSCompletionCheck(
-      Number(userId),
-      surveyId
-    );
-    // Actualizar el estado con el resultado de la llamada (YES o NO)
-    setSurveyCompletionStatus((prevStatus) =>
-      new Map(prevStatus).set(surveyId, !!isCompleted)
-    );
-  }
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchData2();
-      fetchData3();
-    }, 1000);
-    return () => clearInterval(interval);
+    const fetchResponses = async () => {
+      if (!userId) return;
+      try {
+        const count = await fetchAnsweredSurveysCount(userId);
+        setNumberResp(count);
+      } catch (error) {
+        console.error("Error fetching survey count:", error);
+      }
+    };
+    fetchResponses();
   }, [userId]);
 
   useEffect(() => {
-    // Obtener el estado de completado de cada encuesta cuando se cargan las encuestas
-    surveyList.forEach((survey) => {
-      fetchSurveyCompletionStatus(survey.id);
-    });
-  }, [surveyList]);*/
+    const checkCompletedSurveys = async () => {
+      if (!userId || surveyList.length === 0) return;
+
+      const results: { [key: number]: boolean } = {};
+
+      await Promise.all(
+        surveyList.map(async (survey) => {
+          const completed = await checkIfSurveyCompleted(userId, survey.id);
+          results[survey.id] = completed;
+        })
+      );
+
+      setCompletedSurveys(results);
+    };
+
+    checkCompletedSurveys();
+  }, [surveyList, userId]);
 
   return (
     <>
-      <div className="px-27 py-10">
-        <Card className="bg-emerald-100">
-          <CardContent>
-            <div className="flex items-center justify-between space-x-3 px-4 py-2">
-              <div className="flex flex-col items-center space-y-2 ml-10">
-                <p>aquí iba el avatar</p>
-                <p className="font-medium">ID: {userId}</p>
-              </div>
-              <div className="max-w-4xl mx-auto ">
-                <Card className="bg-emerald-600 text-white font-bold p-6">
-                  <CardContent>
-                    <p>Current rewards: {numberResp * 10} points!</p>
-                    <p>Surveys completed: {numberResp}</p>
-                    <p>Daily strike count: Available soon</p>
-                    <p>Daily strike bonus: Available soon</p>
-                    <p>Survey completion bonus: Available soon</p>
+      <div className="px-30 py-10">
+        <div className="max-w-6xl mx-auto">
+          <Card className="bg-emerald-100">
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2.2fr_0.8fr] gap-4 py-2">
+                {/* Current Rewards (estrecha/cuadrada) */}
+                <Card className="bg-emerald-600 text-white p-4 h-full flex items-start justify-center">
+                  <CardContent className="flex flex-col items-center justify-start h-full pt-0 px-4">
+                    <h2 className="text-xl font-semibold mb-0 text-center">
+                      Current Rewards
+                    </h2>
+                    <p className="text-7xl font-extrabold text-center leading-none">
+                      {numberResp * 10}
+                    </p>
                   </CardContent>
                 </Card>
+
+                {/* Overview (más ancha) */}
+                <Card className="bg-emerald-600 text-white p-4 h-full">
+                  <CardContent>
+                    <h2 className="text-xl font-semibold mb-3">Overview</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3">
+                      {/* Columna izquierda */}
+                      <div className="space-y-2">
+                        <div className="flex">
+                          <p className="w-40 text-sm">Surveys completed:</p>
+                          <p className="text-lg font-bold leading-none">
+                            {numberResp}
+                          </p>
+                        </div>
+                        <div className="flex">
+                          <p className="w-40 text-sm">Daily streak count:</p>
+                          <p className="text-lg font-bold leading-none">0</p>
+                        </div>
+                      </div>
+
+                      {/* Columna derecha */}
+                      <div className="space-y-2">
+                        <div className="flex">
+                          <p className="w-40 text-sm">Daily strike bonus:</p>
+                          <p className="text-lg font-bold leading-none">0</p>
+                        </div>
+                        <div className="flex">
+                          <p className="w-40 text-sm">Completion bonus:</p>
+                          <p className="text-lg font-bold leading-none">0</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Botones (más estrecho) */}
+                <div className="flex flex-col justify-center space-y-4 w-full">
+                  <Link href="/">
+                    <Button className="w-full bg-emerald-600 text-white">
+                      Daily Strike
+                    </Button>
+                  </Link>
+                  <Link href="/">
+                    <Button className="w-full bg-emerald-600 text-white">
+                      Withdraw rewards
+                    </Button>
+                  </Link>
+                </div>
               </div>
-              {/* Sección derecha (Botones) */}
-              <div className="flex flex-col space-y-4 w-40">
-                <Link href="/">
-                  <Button className="w-full bg-emerald-600">
-                    Daily Strike
-                  </Button>
-                </Link>
-                <Link href="/">
-                  <Button className="w-full bg-emerald-600">
-                    Withdraw rewards
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Table Section */}
       <div className="px-30 py-10">
-        <Table className="mt-4">
-          <TableCaption>A list of all surveys created</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Title</TableHead>
-              <TableHead className="text-center">Created at</TableHead>
-              <TableHead className="text-center">Company ID</TableHead>
-              <TableHead className="text-center">Completed</TableHead>
-              <TableHead className="text-right">Results</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {surveyList
-              .sort(
-                (a, b) =>
-                  new Date(b.created_at).getTime() -
-                  new Date(a.created_at).getTime()
-              )
-              .map((currentSurvey) => {
-                const completionStatus = surveyCompletionStatus.get(
-                  currentSurvey.id
-                );
-                return (
-                  <TableRow key={currentSurvey.id}>
-                    <TableCell className="font-medium text-left">
-                      {currentSurvey.title}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {moment(currentSurvey.created_at).fromNow()}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {currentSurvey.user_id}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {completionStatus ? "YES" : "NO"}
-                    </TableCell>
-                    <TableCell className="text-right px-0">
-                      <Link href={`/answersurvey/${currentSurvey.id}`}>
-                        <Button
-                          className={`px-2 py-1 text-xs ${
-                            completionStatus
-                              ? "bg-gray-400 w-27"
-                              : "bg-emerald-600"
-                          }`}
-                          disabled={completionStatus} // Disable the button if the survey is completed
-                        >
-                          {completionStatus ? "Done" : "Complete survey"}
-                        </Button>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
+        <div className="max-w-6xl mx-auto">
+          <Table className="mt-4">
+            <TableCaption>Answer surveys for crypto rewards</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead scope="col" className="w-[100px]">
+                  Title
+                </TableHead>
+                <TableHead scope="col" className="text-center">
+                  Created at
+                </TableHead>
+                <TableHead scope="col" className="text-center">
+                  Company ID
+                </TableHead>
+                <TableHead scope="col" className="text-center">
+                  Completed
+                </TableHead>
+                <TableHead scope="col" className="text-right">
+                  Link
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {surveyList
+                .filter((survey) => survey.user_id !== userId)
+                .sort(
+                  (a, b) =>
+                    new Date(b.created_at).getTime() -
+                    new Date(a.created_at).getTime()
+                )
+                .map((currentSurvey) => {
+                  const completionStatus = completedSurveys[currentSurvey.id];
+                  return (
+                    <TableRow key={currentSurvey.id}>
+                      <TableCell className="font-medium text-left">
+                        {currentSurvey.title}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {moment(currentSurvey.created_at).fromNow()}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {currentSurvey.user_id}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {completionStatus ? "YES" : "NO"}
+                      </TableCell>
+                      <TableCell className="text-right px-0">
+                        <Link href={`/answersurvey/${currentSurvey.id}`}>
+                          <Button
+                            className={`px-3 py-1.5 text-sm ${
+                              completionStatus
+                                ? "bg-gray-400 w-27"
+                                : "bg-emerald-600"
+                            }`}
+                            disabled={completionStatus} // Disable the button if the survey is completed
+                          >
+                            {completionStatus ? "Done" : "Complete survey"}
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </>
   );

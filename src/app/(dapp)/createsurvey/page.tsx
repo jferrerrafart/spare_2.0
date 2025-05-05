@@ -141,7 +141,7 @@ export default function createSurvey() {
               )}
 
               <CardFooter className="flex justify-center space-x-4">
-                <Link href="/">
+                <Link href="/companydashboard">
                   <Button className="px-5 py-1 text-xs bg-white text-black border border-gray-300 hover:bg-gray-100">
                     Cancel
                   </Button>
