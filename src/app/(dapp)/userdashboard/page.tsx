@@ -121,7 +121,7 @@ export default function userDashboard() {
                       {/* Columna derecha */}
                       <div className="space-y-2">
                         <div className="flex">
-                          <p className="w-40 text-sm">Daily strike bonus:</p>
+                          <p className="w-40 text-sm">Daily streak bonus:</p>
                           <p className="text-lg font-bold leading-none">0</p>
                         </div>
                         <div className="flex">
