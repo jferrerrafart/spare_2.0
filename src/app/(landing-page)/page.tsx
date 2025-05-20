@@ -6,7 +6,7 @@ export default function Home() {
       <p className="py-10 text-lg font-semibold">
         Please connect your wallet to start using SPARE
       </p>
-      <Image src="/rocketspareman.png" alt="Rocket" width={250} height={250} />
+      <Image src="/rocketspareman.png" alt="Rocket" width={450} height={450} />
     </div>
   );
 }
