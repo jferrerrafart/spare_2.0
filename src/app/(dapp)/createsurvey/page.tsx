@@ -27,14 +27,14 @@ import {
 import { Input } from "@/components/ui/input";
 import React from "react";
 //import { useState } from "react";
-interface CreateSurveyProps {
+/*interface CreateSurveyProps {
   companyId: number | null;
-}
+}*/
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 
-export default function createSurvey() {
-  const { userId, wallet } = useUser();
+export default function CreateSurvey() {
+  const { userId } = useUser();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

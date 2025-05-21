@@ -26,8 +26,8 @@ import moment from "moment";
 import Link from "next/link";
 import { fetchUserSurveys } from "./FetchUserSurveys";
 
-export default function companyDashboard() {
-  const { userId, wallet } = useUser();
+export default function CompanyDashboard() {
+  const { userId } = useUser();
   //const [countSurveys, setCountSurveys] = useState(0);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   const [totalResponses, setTotalResponses] = useState(0);

@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { iSurvey, iResults } from "@/types/types";
 import Link from "next/link";
 
-export default function surveyResults() {
+export default function SurveyResults() {
   const params = useParams();
   const [surveyR, setSurveyR] = useState<iSurvey | null>(null);
   const [results, setResults] = useState<iResults | null>(null);

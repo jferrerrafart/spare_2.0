@@ -28,8 +28,8 @@ import { fetchAvailableSurveys } from "./FetchAvailableSurveys";
 import { fetchAnsweredSurveysCount } from "./FetchAnsweredSurveysCount";
 import { checkIfSurveyCompleted } from "./CheckIfSurveyCompleted";
 
-export default function userDashboard() {
-  const { userId, wallet } = useUser();
+export default function UserDashboard() {
+  const { userId } = useUser();
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   const [completedSurveys, setCompletedSurveys] = useState<{
     [key: number]: boolean;

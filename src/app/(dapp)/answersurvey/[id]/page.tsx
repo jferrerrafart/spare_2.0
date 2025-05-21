@@ -17,8 +17,8 @@ import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
-export default function answerSurvey() {
-  const { userId, wallet } = useUser();
+export default function AnswerSurvey() {
+  const { userId } = useUser();
   const params = useParams();
   const router = useRouter();
   const [survey, setSurvey] = useState<iSurvey | null>(null);
