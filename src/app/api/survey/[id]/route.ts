@@ -3,10 +3,11 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const surveyId = parseInt(params.id, 10);
+    const id = (await params).id;
+    const surveyId = parseInt(id, 10);
 
     if (isNaN(surveyId)) {
       return NextResponse.json({ error: "Invalid survey ID" }, { status: 400 });

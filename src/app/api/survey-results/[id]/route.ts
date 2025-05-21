@@ -1,8 +1,60 @@
-import { prisma } from "@/lib/prismaClient";
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prismaClient";
 
 export async function GET(
   req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const id = (await params).id;
+  const survey_id = parseInt(id, 10);
+
+  try {
+    const totalResponses = await prisma.response.count({
+      where: { survey_id },
+    });
+
+    if (totalResponses === 0) {
+      return NextResponse.json({
+        survey_id,
+        totalResponses,
+        option_a: 0,
+        option_b: 0,
+        option_c: 0,
+        option_d: 0,
+      });
+    }
+
+    const optionCounts = await prisma.response.groupBy({
+      by: ["selected_option"],
+      where: { survey_id },
+      _count: { selected_option: true },
+    });
+
+    const results = {
+      survey_id,
+      totalResponses,
+      option_a: 0,
+      option_b: 0,
+      option_c: 0,
+      option_d: 0,
+    };
+
+    optionCounts.forEach((option) => {
+      if (option.selected_option in results) {
+        results[option.selected_option as keyof typeof results] = Math.round(
+          (option._count.selected_option / totalResponses) * 100
+        );
+      }
+    });
+
+    return NextResponse.json(results);
+  } catch (e) {
+    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+  }
+}
+
+/*export async function GET(
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -55,4 +107,4 @@ export async function GET(
   } catch (e) {
     return NextResponse.json({ error: (e as Error).message }, { status: 500 });
   }
-}
+}*/
